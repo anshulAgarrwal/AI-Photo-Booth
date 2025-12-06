@@ -11,7 +11,7 @@ const getAiClient = () => {
 // Use Gemini 2.5 Flash Image for generation and editing
 export const generateTimeTravelImage = async (
   base64Image: string,
-  eraPrompt: string,
+  stylePrompt: string,
   customInstruction?: string
 ): Promise<string> => {
   const ai = getAiClient();
@@ -19,12 +19,12 @@ export const generateTimeTravelImage = async (
   // Clean base64 string
   const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
 
-  let prompt = `Transform this person into a character from the ${eraPrompt} era. 
-  Keep the person's facial features and likeness recognizable but change their clothing, hair, and background to match the historical period perfectly. 
+  let prompt = `Transform the person in this image. Style target: ${stylePrompt}. 
+  Keep the person's facial features and likeness recognizable but change their clothing, hair, lighting and background to match the style description perfectly. 
   High quality, photorealistic, cinematic lighting.`;
 
   if (customInstruction) {
-    prompt = `Edit this image: ${customInstruction}. Maintain the historical style and the person's identity.`;
+    prompt = `Edit this image: ${customInstruction}. Maintain the established style and the person's identity.`;
   }
 
   try {
@@ -77,7 +77,7 @@ export const analyzeHistoricalAccuracy = async (base64Image: string): Promise<st
               data: cleanBase64
             }
           },
-          { text: "Analyze this image. What historical era does it appear to depict? Evaluate the clothing, background, and artifacts for historical accuracy. Be specific but concise." }
+          { text: "Analyze this image. What historical era or professional style does it appear to depict? Evaluate the clothing, background, and lighting. Be specific but concise." }
         ]
       }
     });

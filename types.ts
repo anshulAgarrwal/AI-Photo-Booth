@@ -1,9 +1,12 @@
-export interface HistoricalEra {
+export type StyleCategory = 'historical' | 'professional';
+
+export interface StyleOption {
   id: string;
   name: string;
   description: string;
   promptSuffix: string;
   imagePlaceholder: string;
+  category: StyleCategory;
 }
 
 export enum AppState {
@@ -14,11 +17,17 @@ export enum AppState {
   ERROR = 'ERROR'
 }
 
+export interface GenerationStep {
+  id: string;
+  image: string; // Base64
+  description: string;
+}
+
 export interface GeneratedImage {
   originalImage: string; // Base64
-  currentImage: string; // Base64
-  era: HistoricalEra;
-  history: string[]; // History of prompt modifications
+  selectedStepId: string | 'original'; // 'original' or UUID of a step
+  style: StyleOption;
+  steps: GenerationStep[];
 }
 
 export interface AnalysisResult {
